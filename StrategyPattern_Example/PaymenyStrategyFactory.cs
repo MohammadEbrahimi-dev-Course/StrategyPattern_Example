@@ -19,4 +19,23 @@ public class PaymenyStrategyFactory
             _ => throw new NotSupportedException($"payment type  {orderType} is not supported.")
         };
     }
+
+
+    #region  Better Solution With Strategy
+    public static IPaymentStrategy GetPaymentStrategy_Better(OrderType orderType)
+    {
+        //It get dynamicly and don't need to add new case
+        if (!PaymentStrategyRegistery.Strategies.ContainsKey(orderType))
+        {
+            throw new NotSupportedException($"payment type  {orderType} is not supported.");
+        }
+
+        return PaymentStrategyRegistery.Strategies[orderType]();
+    }
+
+    public static void RegisterStrategy(OrderType orderType, Func<IPaymentStrategy> strategy)
+    {
+        PaymentStrategyRegistery.Strategies[orderType] = strategy;
+    }
+    #endregion
 }

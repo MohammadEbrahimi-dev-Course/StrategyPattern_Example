@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using StrategyPattern_Example.Entities.Enum;
+﻿using StrategyPattern_Example.Dto;
 using StrategyPattern_Example.Entities;
-using StrategyPattern_Example.Services;
-using StrategyPattern_Example.Dto;
+using StrategyPattern_Example.Entities.Enum;
+using StrategyPattern_Example.Services.StrategyPattern;
 
 namespace StrategyPattern_Example.Endpoints;
 
@@ -14,17 +13,25 @@ public static class EndPointsWithStrategyPattern
             .WithDescription("Check Payment Type With Strategy Pattern");
 
         _ = root.MapGet("/", Payments)
-            .Produces<List<PaymentResult>> ()
+            .Produces<List<PaymentResult>>()
             .ProducesValidationProblem()
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithSummary("List of Payment Orders With Strategy")
             .WithDescription("\n    GET /withStrategy");
 
+        _ = root.MapGet("/Better", BetterPayments)
+            .Produces<List<PaymentResult>>()
+            .ProducesValidationProblem()
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithSummary("List of Payment Orders With Better Strategy")
+            .WithDescription("\n    GET /withBetterStrategy");
+
         return app;
     }
 
-    public static async Task<IResult> Payments([FromServices] Bad_OrderService orderService)
+    public static async Task<IResult> Payments()
     {
         List<PaymentResult> Result = new List<PaymentResult>();
         var order1 = new Order { OrderId = 1, Amount = 100.0, OrderType = OrderType.CreditCard };
@@ -55,6 +62,36 @@ public static class EndPointsWithStrategyPattern
         var paymentResultOrder4 = context4.ExecutePayment(order4);
         Result.Add(new PaymentResult(order4, paymentResultOrder4));
 
+
+        return Results.Ok(Result);
+    }
+
+    public static async Task<IResult> BetterPayments()
+    {
+        //Register a new payment strategy dynamically
+        PaymenyStrategyFactory.RegisterStrategy(OrderType.CreditCard, () => new BitcoinPayment());
+
+        List<PaymentResult> Result = new List<PaymentResult>();
+
+        var orders = new[]
+        {
+            new Order { OrderId = 1, Amount = 100.0, OrderType = OrderType.CreditCard },
+            new Order { OrderId = 2, Amount = 200.0, OrderType = OrderType.Paypal },
+            new Order { OrderId = 3, Amount = 300.0, OrderType = OrderType.Bitcoin },
+
+            //new Type
+            new Order { OrderId = 4, Amount = 400.0, OrderType = OrderType.Cash }
+        };
+
+       
+        //Process payments for each Order
+        foreach(var order in orders)
+        {
+            var strategy = PaymenyStrategyFactory.GetPaymentStrategy_Better(order.OrderType);
+            var res = strategy.Pay(order);
+
+            Result.Add(new PaymentResult(order, res));
+        }
 
         return Results.Ok(Result);
     }
