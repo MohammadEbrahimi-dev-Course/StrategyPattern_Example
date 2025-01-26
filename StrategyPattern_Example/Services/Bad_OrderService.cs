@@ -4,6 +4,10 @@ namespace StrategyPattern_Example.Services;
 
 public class Bad_OrderService
 {
+
+    //When a new type is added, the Open/Closed Principle, one of the SOLID principles, is violated.
+    // And Testing is hard too. 
+
     public string ProcessPayment(Order order)
     {
         switch (order.OrderType)
@@ -19,6 +23,12 @@ public class Bad_OrderService
             case Entities.Enum.OrderType.Bitcoin:
                 // Do Some Work and create a transaction to transfer btc 
                 return $"Paid {order.Amount} using Bitcoin for Order {order.OrderId} .";
+
+
+            // And when add new Order Type this Class expand and going to larger and hard to develop 
+            case Entities.Enum.OrderType.Cash:
+                // Do Some Work and confirmation for cash
+                return $"Paid {order.Amount} using cash for Order {order.OrderId}";
 
             default:
                 throw new NotSupportedException($"Payment type {order.OrderType} is not supported.");

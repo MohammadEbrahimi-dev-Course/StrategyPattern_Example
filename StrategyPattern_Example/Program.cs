@@ -23,6 +23,7 @@ app.UseHttpsRedirection();
 
 //Without Strategy Pattern 
 app.MapWithoutStrategyEndPoints();
+app.MapStrategyEndPoints();
 
 
 

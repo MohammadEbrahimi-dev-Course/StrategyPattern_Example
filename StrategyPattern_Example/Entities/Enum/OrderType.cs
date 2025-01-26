@@ -5,5 +5,10 @@ public enum OrderType
 {
     CreditCard,
     Paypal,
-    Bitcoin
+    Bitcoin,
+
+    //Now if We add new Type we have problem with out Strategy pattern
+    Cash
 }
+
+
