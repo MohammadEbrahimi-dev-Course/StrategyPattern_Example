@@ -157,8 +157,6 @@ This project demonstrates the implementation of the **Strategy Design Pattern** 
 
 ---
 
----
-
 ## Resources
 
 ### Video Tutorials:
