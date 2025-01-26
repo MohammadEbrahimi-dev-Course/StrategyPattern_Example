@@ -130,7 +130,7 @@ This project demonstrates the implementation of the **Strategy Design Pattern** 
 
 ### Prerequisites:
 
-- .NET 6.0 or higher.
+- .NET 8.0 or higher.
 - Visual Studio or any C# IDE.
 
 ### Steps:
