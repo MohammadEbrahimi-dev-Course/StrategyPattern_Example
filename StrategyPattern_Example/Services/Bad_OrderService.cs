@@ -5,8 +5,7 @@ namespace StrategyPattern_Example.Services;
 public class Bad_OrderService
 {
 
-    //When a new type is added, the Open/Closed Principle, one of the SOLID principles, is violated.
-    // And Testing is hard too. 
+    // Violates the Open/Closed Principle (OCP): adding a new payment type requires modifying this method.    // And Testing is hard too. 
 
     public string ProcessPayment(Order order)
     {

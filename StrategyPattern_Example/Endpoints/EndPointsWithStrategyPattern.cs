@@ -68,7 +68,7 @@ public static class EndPointsWithStrategyPattern
 
     public static async Task<IResult> BetterPayments()
     {
-        //Register a new payment strategy dynamically
+        // Register a new strategy dynamically for demonstration
         PaymenyStrategyFactory.RegisterStrategy(OrderType.CreditCard, () => new BitcoinPayment());
 
         List<PaymentResult> Result = new List<PaymentResult>();

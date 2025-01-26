@@ -3,6 +3,7 @@ using StrategyPattern_Example.Services.StrategyPattern;
 
 namespace StrategyPattern_Example;
 
+// Factory to provide the appropriate payment strategy.
 public class PaymenyStrategyFactory
 {
     public static IPaymentStrategy GetPaymentStrategy(OrderType orderType)
@@ -22,6 +23,7 @@ public class PaymenyStrategyFactory
 
 
     #region  Better Solution With Strategy
+    // Dynamically retrieves the strategy from the registry based on the OrderType.
     public static IPaymentStrategy GetPaymentStrategy_Better(OrderType orderType)
     {
         //It get dynamicly and don't need to add new case
@@ -33,6 +35,7 @@ public class PaymenyStrategyFactory
         return PaymentStrategyRegistery.Strategies[orderType]();
     }
 
+    // Allows dynamic registration of new payment strategies without modifying this class.
     public static void RegisterStrategy(OrderType orderType, Func<IPaymentStrategy> strategy)
     {
         PaymentStrategyRegistery.Strategies[orderType] = strategy;

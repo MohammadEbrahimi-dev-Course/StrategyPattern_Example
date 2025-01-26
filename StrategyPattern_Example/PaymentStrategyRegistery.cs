@@ -3,7 +3,10 @@ using StrategyPattern_Example.Services.StrategyPattern;
 
 namespace StrategyPattern_Example;
 
-//Better Solution With Strategy
+/// <summary>
+/// Registry for payment strategies. It allows dynamic registration and retrieval of strategies at runtime.
+/// This eliminates the need to modify the factory or existing code when adding new payment types.
+/// </summary>
 public static class PaymentStrategyRegistery
 {
     public static readonly Dictionary<OrderType, Func<IPaymentStrategy>> Strategies = new()
